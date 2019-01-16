@@ -12,22 +12,19 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-function addTodoInternal(text, done = false) {
-  const {state} = store;
-  const todo = {id: ++state.lastId, text: text, done};
-  state.todos = state.todos.concat(todo);
-  state.todoText = '';
-}
+let lastId = 0;
+const createTodo = (text, done = false) => ({id: ++lastId, text: text, done});
 
 const store = new Vuex.Store({
   state: {
-    lastId: 0,
     todoText: '',
-    todos: []
+    todos: [createTodo('learn Vue', true), createTodo('build a Vue app')]
   },
   mutations: {
     addTodo(state) {
-      addTodoInternal(state.todoText);
+      const todo = createTodo(state.todoText);
+      state.todos = state.todos.concat(todo);
+      state.todoText = '';
     },
     archiveCompleted(state) {
       state.todos = state.todos.filter(t => !t.done);
@@ -46,9 +43,6 @@ const store = new Vuex.Store({
     }
   }
 });
-
-addTodoInternal('learn Vue', true);
-addTodoInternal('build a Vue app');
 
 export default {
   name: 'app',

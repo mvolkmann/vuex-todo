@@ -4,7 +4,7 @@
     <div>
       {{uncompletedCount}} of {{todos.length}} remaining
       <button
-        @click="onArchiveCompleted"
+        @click="$store.commit('archiveCompleted')"
       >Archive Completed</button>
     </div>
     <br>
@@ -15,16 +15,16 @@
         autofocus
         placeholder="enter new todo here"
         :value="todoText"
-        @input="updateTodoText"
+        @input="$store.commit('updateTodoText', $event.target.value)"
       >
-      <button :disabled="!todoText" @click="onAddTodo">Add</button>
+      <button :disabled="!todoText" @click="$store.commit('addTodo')">Add</button>
     </form>
     <ul class="unstyled">
       <li :key="todo.id" v-for="todo in todos">
         <Todo
           :todo="todo"
-          :onDeleteTodo="() => onDeleteTodo(todo.id)"
-          :onToggleDone="() => onToggleDone(todo)"
+          :onDeleteTodo="() => $store.commit('deleteTodo', todo.id)"
+          :onToggleDone="() => $store.commit('toggleDone', todo)"
         />
       </li>
     </ul>
@@ -47,28 +47,6 @@ export default {
     uncompletedCount() {
       //const {todos} = this.$store.state;
       return this.todos.filter(t => !t.done).length;
-    }
-  },
-  //todos: [createTodo('learn Vue', true), createTodo('build a Vue app')],
-  methods: {
-    onAddTodo() {
-      this.$store.commit('addTodo');
-    },
-
-    onArchiveCompleted() {
-      this.$store.commit('archiveCompleted');
-    },
-
-    onDeleteTodo(todoId) {
-      this.$store.commit('deleteTodo', todoId);
-    },
-
-    onToggleDone(todo) {
-      this.$store.commit('toggleDone', todo);
-    },
-
-    updateTodoText(e) {
-      this.$store.commit('updateTodoText', e.target.value);
     }
   }
 };
