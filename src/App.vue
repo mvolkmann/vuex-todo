@@ -41,6 +41,9 @@ const store = new Vuex.Store({
     updateTodoText(state, todoText) {
       state.todoText = todoText;
     }
+  },
+  getters: {
+    uncompletedCount: state => state.todos.filter(t => !t.done).length
   }
 });
 

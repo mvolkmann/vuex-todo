@@ -2,7 +2,7 @@
   <div>
     <h2>To Do List</h2>
     <div>
-      {{uncompletedCount}} of {{todos.length}} remaining
+      {{$store.getters.uncompletedCount}} of {{todos.length}} remaining
       <button
         @click="$store.commit('archiveCompleted')"
       >Archive Completed</button>
@@ -43,11 +43,7 @@ export default {
     ...mapState({
       todos: state => state.todos,
       todoText: state => state.todoText
-    }),
-    uncompletedCount() {
-      //const {todos} = this.$store.state;
-      return this.todos.filter(t => !t.done).length;
-    }
+    })
   }
 };
 </script>
