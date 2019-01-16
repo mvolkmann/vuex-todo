@@ -2,7 +2,7 @@
   <div>
     <h2>To Do List</h2>
     <div>
-      {{$store.getters.uncompletedCount}} of {{todos.length}} remaining
+      {{uncompletedCount}} of {{todos.length}} remaining
       <button
         @click="$store.commit('archiveCompleted')"
       >Archive Completed</button>
@@ -33,13 +33,14 @@
 
 <script>
 /* eslint-disable no-console */
-import {mapState} from 'vuex';
+import {mapGetters, mapState} from 'vuex';
 import Todo from './Todo.vue';
 
 export default {
   name: 'TodoList',
   components: {Todo},
   computed: {
+    ...mapGetters(['uncompletedCount']),
     ...mapState({
       todos: state => state.todos,
       todoText: state => state.todoText
