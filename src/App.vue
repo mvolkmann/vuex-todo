@@ -1,11 +1,14 @@
 <template>
   <div id="app">
     <TodoList/>
+    <Test :name="name"/>
+    <button @click="changeName">Change</button>
   </div>
 </template>
 
 <script>
 /* eslint-disable no-console */
+import Test from './components/Test.vue';
 import TodoList from './components/TodoList.vue';
 import Vue from 'vue';
 import Vuex from 'vuex';
@@ -16,6 +19,7 @@ let lastId = 0;
 const createTodo = (text, done = false) => ({id: ++lastId, text: text, done});
 
 const store = new Vuex.Store({
+  strict: true,
   state: {
     todoText: '',
     todos: [createTodo('learn Vue', true), createTodo('build a Vue app')]
@@ -50,7 +54,16 @@ const store = new Vuex.Store({
 export default {
   name: 'app',
   components: {
-    TodoList
+    TodoList,
+    Test
+  },
+  data: () => {
+    return {name: 'start'};
+  },
+  methods: {
+    changeName() {
+      this.name = 'T' + Date.now();
+    }
   },
   store
 };
