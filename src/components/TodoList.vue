@@ -4,7 +4,7 @@
     <div>
       {{uncompletedCount}} of {{todos.length}} remaining
       <button
-        @click="archiveCompleted()"
+        @click="$store.commit('archiveCompleted')"
       >Archive Completed</button>
     </div>
     <br>
@@ -15,13 +15,17 @@
         autofocus
         placeholder="enter new todo here"
         :value="todoText"
-        @input="updateTodoText($event.target.value)"
+        @input="$store.commit('updateTodoText', $event.target.value)"
       >
-      <button :disabled="!todoText" @click="addTodo()">Add</button>
+      <button :disabled="!todoText" @click="$store.commit('addTodo')">Add</button>
     </form>
     <ul class="unstyled">
       <li :key="todo.id" v-for="todo in todos">
-        <Todo :todo="todo" :onDeleteTodo="deleteTodo(todo.id)" :onToggleDone="toggleDone(todo)"/>
+        <Todo
+          :todo="todo"
+          :onDeleteTodo="() => $store.commit('deleteTodo', todo.id)"
+          :onToggleDone="() => $store.commit('toggleDone', todo)"
+        />
       </li>
     </ul>
   </div>
@@ -48,10 +52,13 @@ export default {
       todos: state => state.todos,
       todoText: state => state.todoText
     })
+  },
+  mounted() {
+    console.log('TodoList.vue mounted: this =', this);
   }
 };
 </script>
-
+)
 <style scoped>
 button:disabled {
   background-color: gray;

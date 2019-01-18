@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 let lastId = 0;
-const createTodo = (text, done = false) => ({id: ++lastId, text: text, done});
+const createTodo = (text, done = false) => ({id: ++lastId, text, done});
 
 export default new Vuex.Store({
   strict: true,
