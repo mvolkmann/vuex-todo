@@ -4,7 +4,7 @@
     <div>
       {{uncompletedCount}} of {{todos.length}} remaining
       <button
-        @click="$store.commit('archiveCompleted')"
+        @click="this.archiveCompleted()"
       >Archive Completed</button>
     </div>
     <br>
@@ -15,7 +15,7 @@
         autofocus
         placeholder="enter new todo here"
         :value="todoText"
-        @input="$store.commit('updateTodoText', $event.target.value)"
+        @input="this.updateTodoText($event.target.value)"
       >
       <button :disabled="!todoText" @click="$store.commit('addTodo')">Add</button>
     </form>
@@ -23,8 +23,8 @@
       <li :key="todo.id" v-for="todo in todos">
         <Todo
           :todo="todo"
-          :onDeleteTodo="() => $store.commit('deleteTodo', todo.id)"
-          :onToggleDone="() => $store.commit('toggleDone', todo)"
+          :onDeleteTodo="this.deleteTodo(todo.id)"
+          :onToggleDone="this.toggleDone(todo)"
         />
       </li>
     </ul>
@@ -33,7 +33,7 @@
 
 <script>
 /* eslint-disable no-console */
-import {mapGetters, mapState} from 'vuex';
+import {mapGetters, mapMutations, mapState} from 'vuex';
 import Todo from './Todo.vue';
 
 export default {
@@ -41,6 +41,13 @@ export default {
   components: {Todo},
   computed: {
     ...mapGetters(['uncompletedCount']),
+    ...mapMutations([
+      'addTodo',
+      'archiveCompleted',
+      'deleteTodo',
+      'toggleDone',
+      'updateTodoText'
+    ]),
     ...mapState({
       todos: state => state.todos,
       todoText: state => state.todoText
