@@ -4,7 +4,7 @@
     <div>
       {{uncompletedCount}} of {{todos.length}} remaining
       <button
-        @click="this.archiveCompleted()"
+        @click="archiveCompleted()"
       >Archive Completed</button>
     </div>
     <br>
@@ -15,17 +15,13 @@
         autofocus
         placeholder="enter new todo here"
         :value="todoText"
-        @input="this.updateTodoText($event.target.value)"
+        @input="updateTodoText($event.target.value)"
       >
-      <button :disabled="!todoText" @click="$store.commit('addTodo')">Add</button>
+      <button :disabled="!todoText" @click="addTodo()">Add</button>
     </form>
     <ul class="unstyled">
       <li :key="todo.id" v-for="todo in todos">
-        <Todo
-          :todo="todo"
-          :onDeleteTodo="this.deleteTodo(todo.id)"
-          :onToggleDone="this.toggleDone(todo)"
-        />
+        <Todo :todo="todo" :onDeleteTodo="deleteTodo(todo.id)" :onToggleDone="toggleDone(todo)"/>
       </li>
     </ul>
   </div>

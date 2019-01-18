@@ -3,6 +3,7 @@
 </template-->
 
 <script>
+/* eslint-disable no-console */
 export default {
   name: 'Test',
   props: {
@@ -13,7 +14,7 @@ export default {
       colors: ['red', 'green', 'blue']
     };
   },
-  render(createElement) {
+  render(/*createElement*/) {
     //return createElement('h1', 'Hello from createElement!');
     //return <h1>Hello from JSX!</h1>;
     return <ul>{this.getItems()}</ul>;
