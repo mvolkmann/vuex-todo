@@ -32,6 +32,9 @@ export default {
     doneClass() {
       return 'done-' + this.todo.done;
     }
+  },
+  mounted() {
+    console.log(this.$options._componentTag + ':', this);
   }
 };
 </script>
