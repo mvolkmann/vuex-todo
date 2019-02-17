@@ -32,7 +32,6 @@
 </template>
 
 <script>
-/* eslint-disable no-console */
 import {mapGetters, mapMutations, mapState} from 'vuex';
 import Todo from './Todo.vue';
 
@@ -57,7 +56,7 @@ export default {
   }
 };
 </script>
-)
+
 <style scoped>
 button:disabled {
   background-color: gray;

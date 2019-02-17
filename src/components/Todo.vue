@@ -7,7 +7,6 @@
 </template>
 
 <script>
-/* eslint-disable no-console */
 export default {
   name: 'Todo',
   props: {
@@ -34,14 +33,13 @@ export default {
     }
   },
   mounted() {
+    // Just for debugging.
     console.log(this.$options._componentTag + ':', this);
   }
 };
 </script>
 
-<style lang="scss" scoped>
-$done-color: gray;
-
+<style scoped>
 button {
   margin-left: 10px;
 }
@@ -50,7 +48,7 @@ li {
   margin-top: 5px;
 
   .done-true {
-    color: $done-color;
+    color: gray;
     text-decoration: line-through;
   }
 }
