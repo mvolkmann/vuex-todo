@@ -32,8 +32,10 @@
 </template>
 
 <script>
-import {mapGetters, mapMutations, mapState} from 'vuex';
+import {mapActions, mapGetters, mapMutations, mapState} from 'vuex';
 import Todo from './Todo.vue';
+
+const SERVER_URL = 'http://localhost:1919/todo/';
 
 export default {
   name: 'TodoList',
@@ -45,11 +47,21 @@ export default {
       todoText: state => state.todoText
     })
   },
+  async created() {
+    const res = await fetch(SERVER_URL);
+    const todos = await res.json();
+    console.log('TodoList created: todos =', todos);
+    this.$store.commit('setTodos', todos);
+  },
   methods: {
-    ...mapMutations([
+    ...mapActions([
       'addTodo',
+      'deleteTodo'
+    ]),
+    ...mapMutations([
+      //'addTodo',
       'archiveCompleted',
-      'deleteTodo',
+      //'deleteTodo',
       'toggleDone',
       'updateTodoText'
     ])

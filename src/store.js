@@ -6,11 +6,14 @@ Vue.use(Vuex);
 let lastId = 0;
 const createTodo = (text, done = false) => ({id: ++lastId, text, done});
 
+const SERVER_URL = 'http://localhost:1919/todo/';
+
 export default new Vuex.Store({
   strict: true,
   state: {
     todoText: '',
-    todos: [createTodo('learn Vue', true), createTodo('build a Vue app')]
+    //todos: [createTodo('learn Vue', true), createTodo('build a Vue app')]
+    todos: []
   },
   mutations: {
     addTodo(state) {
@@ -24,6 +27,9 @@ export default new Vuex.Store({
     deleteTodo(state, todoId) {
       state.todos = state.todos.filter(t => t.id !== todoId);
     },
+    setTodos(state, todos) {
+      state.todos = todos;
+    },
     toggleDone(state, todo) {
       const todoToToggle = state.todos.find(t => t.id === todo.id);
       todoToToggle.done = !todoToToggle.done;
@@ -34,5 +40,28 @@ export default new Vuex.Store({
   },
   getters: {
     uncompletedCount: state => state.todos.filter(t => !t.done).length
+  },
+  actions: {
+    async addTodo(context) {
+      const todo = createTodo(context.state.todoText);
+      const res = await fetch(SERVER_URL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(todo)
+      });
+      if (res.ok) {
+        context.commit('addTodo');
+      } else {
+        alert('Error adding todo');
+      }
+    },
+    async deleteTodo(context, todoId) {
+      const res = await fetch(SERVER_URL + todoId, {method: 'DELETE'});
+      if (res.ok) {
+        context.commit('deleteTodo');
+      } else {
+        alert('Error deleting todo');
+      }
+    }
   }
 });
