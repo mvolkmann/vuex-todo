@@ -25,10 +25,8 @@ export default new Vuex.Store({
       state.todos = state.todos.filter(t => t.id !== todoId);
     },
     toggleDone(state, todo) {
-      const {id} = todo;
-      for (const todo of state.todos) {
-        if (todo.id === id) todo.done = !todo.done;
-      }
+      const todoToToggle = state.todos.find(t => t.id === todo.id);
+      todoToToggle.done = !todoToToggle.done;
     },
     updateTodoText(state, todoText) {
       state.todoText = todoText;
