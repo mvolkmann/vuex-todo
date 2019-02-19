@@ -16,10 +16,10 @@ export default new Vuex.Store({
     todos: []
   },
   mutations: {
-    addTodo(state) {
-      const todo = createTodo(state.todoText);
+    addTodo(state, todo) {
       state.todos.push(todo);
       state.todoText = '';
+      console.log('store addTodo: lastId =', lastId);
     },
     archiveCompleted(state) {
       state.todos = state.todos.filter(t => !t.done);
@@ -29,6 +29,8 @@ export default new Vuex.Store({
     },
     setTodos(state, todos) {
       state.todos = todos;
+      lastId = todos.reduce((acc, todo) => Math.max(acc, todo.id), 0);
+      console.log('store setTodos: lastId =', lastId);
     },
     toggleDone(state, todo) {
       const todoToToggle = state.todos.find(t => t.id === todo.id);
@@ -50,15 +52,17 @@ export default new Vuex.Store({
         body: JSON.stringify(todo)
       });
       if (res.ok) {
-        context.commit('addTodo');
+        context.commit('addTodo', todo);
       } else {
         alert('Error adding todo');
       }
     },
     async deleteTodo(context, todoId) {
+      console.log('store deleteTodo action: todoId =', todoId);
       const res = await fetch(SERVER_URL + todoId, {method: 'DELETE'});
+      console.log('store deleteTodo action: res =', res);
       if (res.ok) {
-        context.commit('deleteTodo');
+        context.commit('deleteTodo', todoId);
       } else {
         alert('Error deleting todo');
       }
